@@ -4,7 +4,7 @@
 	"name": "Java & PostgreSQL",
 	"dockerComposeFile": "docker-compose.yml",
 	"service": "app",
-	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}"
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}/app",
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {}
@@ -17,7 +17,17 @@
 	// "postCreateCommand": "java -version",
 
 	// Configure tool-specific properties.
-	// "customizations": {},
+	"customizations": {
+			"vscode": {
+  	    "extensions": [
+					"vscjava.vscode-java-pack"
+				],
+				"settings": {
+					"java.jdt.ls.java.home": "/usr/lib/jvm/msopenjdk-current",
+					"java.project.sourcePaths": ["src/main/java"]
+				}
+    }
+	}
 
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "root"
