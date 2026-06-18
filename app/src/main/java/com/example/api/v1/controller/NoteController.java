@@ -4,12 +4,17 @@ import com.example.api.v1.application.note.CreateNoteInput;
 import com.example.api.v1.application.note.CreateNoteInteractor;
 import com.example.api.v1.application.note.FindOneNoteInput;
 import com.example.api.v1.application.note.FindOneNoteInteractor;
+import com.example.api.v1.application.note.UpdateNoteInput;
+import com.example.api.v1.application.note.UpdateNoteInteractor;
 import com.example.api.v1.controller.request.CreateNoteRequest;
+import com.example.api.v1.controller.request.UpdateNoteRequest;
 import com.example.api.v1.controller.response.CreateNoteResponse;
 import com.example.api.v1.controller.response.FindOneNoteResponse;
+import com.example.api.v1.controller.response.UpdateNoteResponse;
 import com.example.api.v1.domain.object.NoteContent;
 import com.example.api.v1.domain.object.NoteId;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,11 +25,15 @@ public class NoteController {
 
   private final CreateNoteInteractor createNoteInteractor;
   private final FindOneNoteInteractor findOneNoteInteractor;
+  private final UpdateNoteInteractor updateNoteInteractor;
 
   public NoteController(
-      CreateNoteInteractor createNoteInteractor, FindOneNoteInteractor findOneNoteInteractor) {
+      CreateNoteInteractor createNoteInteractor,
+      FindOneNoteInteractor findOneNoteInteractor,
+      UpdateNoteInteractor updateNoteInteractor) {
     this.createNoteInteractor = createNoteInteractor;
     this.findOneNoteInteractor = findOneNoteInteractor;
+    this.updateNoteInteractor = updateNoteInteractor;
   }
 
   @PostMapping("/notes")
@@ -53,5 +62,15 @@ public class NoteController {
   @GetMapping("/notes")
   public String search() {
     return "List of notes";
+  }
+
+  @PatchMapping("/notes/{id}")
+  public UpdateNoteResponse update(@PathVariable String id, @RequestBody UpdateNoteRequest note) {
+    var input = new UpdateNoteInput(new NoteId(id), new NoteContent(note.getContent()));
+    var output = updateNoteInteractor.handle(input);
+    if (output == null) {
+      return null;
+    }
+    return new UpdateNoteResponse(output.getId().getValue());
   }
 }
