@@ -2,6 +2,7 @@ package com.example.api.v1.infrastructure.memory.note;
 
 import com.example.api.v1.domain.dai.NoteRepository;
 import com.example.api.v1.domain.entity.Note;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,18 +28,23 @@ public class NoteMemoryRepository implements NoteRepository {
 
   @Override
   public void update(Note note) {
+    System.out.println("update🐟" + note.getContent());
     this.notes.stream()
         .filter(n -> n.getId().equals(note.getId()))
         .findFirst()
         .ifPresent(
             n -> {
               n.setContent(note.getContent());
+              n.setUpdatedAt(ZonedDateTime.now());
             });
   }
 
   @Override
   public void delete(Note note) {
-    this.notes.remove(note);
+    this.notes.stream()
+        .filter(n -> n.getId().equals(note.getId()))
+        .findFirst()
+        .ifPresent(n -> this.notes.remove(n));
   }
 
   @Override
