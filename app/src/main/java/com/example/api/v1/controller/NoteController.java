@@ -20,6 +20,10 @@ import com.example.api.v1.controller.response.SearchNoteResponse;
 import com.example.api.v1.controller.response.UpdateNoteResponse;
 import com.example.api.v1.domain.object.NoteContent;
 import com.example.api.v1.domain.object.NoteId;
+import com.example.api.v1.domain.object.Tag;
+
+import java.util.stream.Collectors;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -70,6 +74,7 @@ public class NoteController {
     return new FindOneNoteResponse(
         output.getId().getValue(),
         output.getContent().getValue(),
+        output.getTags().map(tags -> tags.stream().map(Tag::getValue).collect(Collectors.toList())),
         output.getCreatedAt(),
         output.getUpdatedAt());
   }

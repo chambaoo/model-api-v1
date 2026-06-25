@@ -22,6 +22,7 @@ public class FindOneNoteInteractor implements FindOneNoteUseCase {
       return null;
     }
     var n = foundNote.get();
-    return new FindOneNoteOutput(n.getId(), n.getContent(), n.getCreatedAt(), n.getUpdatedAt());
+    return new FindOneNoteOutput(
+        n.getId(), n.getContent(), n.getTags(), n.getCreatedAt(), n.getUpdatedAt());
   }
 }
