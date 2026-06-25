@@ -17,7 +17,9 @@ public class CreateNoteInteractor implements CreateNoteUseCase {
 
   public CreateNoteOutput handle(CreateNoteInput input) {
     NoteId noteId = NoteId.generateNoteId();
-    var note = new Note(noteId, input.getContent(), null, ZonedDateTime.now(), ZonedDateTime.now());
+    var note =
+        new Note(
+            noteId, input.getContent(), input.getTags(), ZonedDateTime.now(), ZonedDateTime.now());
     repository.save(note);
     return new CreateNoteOutput(noteId);
   }

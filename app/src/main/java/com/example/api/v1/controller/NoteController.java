@@ -53,7 +53,7 @@ public class NoteController {
 
   @PostMapping("/notes")
   public CreateNoteResponse create(@RequestBody CreateNoteRequest note) {
-    var input = new CreateNoteInput(new NoteContent(note.getContent()));
+    var input = new CreateNoteInput(new NoteContent(note.getContent()), note.getTags());
     var output = createNoteInteractor.handle(input);
     var response = new CreateNoteResponse(output.getId().getValue());
 
